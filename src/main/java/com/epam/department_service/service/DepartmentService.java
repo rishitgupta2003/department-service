@@ -1,22 +1,23 @@
 package com.epam.department_service.service;
 
+import com.epam.department_service.client.EmployeeClient;
 import com.epam.department_service.entity.Department;
+import com.epam.department_service.entity.DepartmentEmployeeDTO;
+import com.epam.department_service.entity.Employee;
 import com.epam.department_service.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final EmployeeClient employeeClient;
 
-    @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
 
     // Create or update a department
     public Department saveDepartment(Department department) {
@@ -40,5 +41,19 @@ public class DepartmentService {
     // Delete department by ID
     public void deleteDepartment(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    //Get All Info about Department
+    public DepartmentEmployeeDTO getFullInfo(String departmentCode){
+        Department byDepartmentCode = departmentRepository.findByDepartmentCode(departmentCode);
+        List<Employee> body = employeeClient.getByDepartment(departmentCode).getBody();
+
+        return DepartmentEmployeeDTO.builder()
+                .id(byDepartmentCode.getId())
+                .departmentName(byDepartmentCode.getDepartmentName())
+                .departmentCode(departmentCode)
+                .departmentDescription(byDepartmentCode.getDepartmentDescription())
+                .listOfEmployee(body)
+                .build();
     }
 }

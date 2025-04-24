@@ -17,5 +17,6 @@ public class DepartmentEmployeeDTO {
     private String departmentDescription;
     private String departmentCode;
     List<Employee> listOfEmployee;
+    private OrganisationDto organisationDto;
 
 }

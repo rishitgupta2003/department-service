@@ -1,9 +1,11 @@
 package com.epam.department_service.service;
 
 import com.epam.department_service.client.EmployeeClient;
+import com.epam.department_service.client.OrganisationClient;
 import com.epam.department_service.entity.Department;
 import com.epam.department_service.entity.DepartmentEmployeeDTO;
 import com.epam.department_service.entity.Employee;
+import com.epam.department_service.entity.OrganisationDto;
 import com.epam.department_service.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final EmployeeClient employeeClient;
+    private final OrganisationClient organisationClient;
 
 
     // Create or update a department
@@ -47,6 +50,7 @@ public class DepartmentService {
     public DepartmentEmployeeDTO getFullInfo(String departmentCode){
         Department byDepartmentCode = departmentRepository.findByDepartmentCode(departmentCode);
         List<Employee> body = employeeClient.getByDepartment(departmentCode).getBody();
+        OrganisationDto body1 = organisationClient.getOrganisationByCode(byDepartmentCode.getOrgCode()).getBody();
 
         return DepartmentEmployeeDTO.builder()
                 .id(byDepartmentCode.getId())
@@ -54,6 +58,7 @@ public class DepartmentService {
                 .departmentCode(departmentCode)
                 .departmentDescription(byDepartmentCode.getDepartmentDescription())
                 .listOfEmployee(body)
+                .organisationDto(body1)
                 .build();
     }
 }

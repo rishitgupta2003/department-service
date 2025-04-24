@@ -1,28 +1,22 @@
 package com.epam.department_service.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
-public class Department {
-
+public class Organisation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
 
     @Column
-    private String departmentName;
-
-    @Column
-    private String departmentDescription;
-
-    @Column
-    private String departmentCode;
+    private String orgName;
 
     @Column
     private String orgCode;
